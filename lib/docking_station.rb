@@ -9,16 +9,26 @@ class DockingStation
   end
 
   def release_bike
-    fail "There are no bikes available" unless @bikes[0]
+    fail "There are no bikes available" if self.send(:empty?)
     @bikes.pop
   end
 
-  # def show_bike
-  #   @bikes
-  # end
-
   def dock(bike)
-    fail "Capacity is full" if @bikes.length >= 20
+    fail "Capacity reached" if self.send(:full?)
     @bikes << bike
   end
+
+  private
+
+  def full?
+    @bikes.count >= 20 ? true : false
+  end
+
+  def empty?
+    @bikes.empty? ? true : false
+  end
 end
+
+#  station = DockingStation.new
+#
+# 21.times { station.dock(Bike.new) }
